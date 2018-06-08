@@ -8,6 +8,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw_gl3.h>
 #include <iostream>
+#include <math.h>
 #include <sstream>
 #include <sync.h>
 #include <track.h>
@@ -23,7 +24,7 @@
 // Comment out to disable autoplay without tcp-Rocket
 //#define MUSIC_AUTOPLAY
 // Comment out to load sync from files
-//#define TCPROCKET
+#define TCPROCKET
 // Comment out to remove gui
 #define GUI
 
@@ -195,7 +196,7 @@ int main()
     std::string fragPath(RES_DIRECTORY);
     fragPath += "shader/basic_frag.glsl";
     Scene scene(std::vector<std::string>({vertPath, fragPath}),
-                std::vector<std::string>(), rocket);
+                std::vector<std::string>({"testi"}), rocket);
 
 #ifdef TCPROCKET
     // Try connecting to rocket-server
