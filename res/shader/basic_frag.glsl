@@ -8,5 +8,7 @@ out vec4 fragColor;
 void main()
 {
     vec2 uv = gl_FragCoord.xy / uRes.xy;
-    fragColor = vec4(uv + 0.5 * uMPos, 0.5 + 0.5 * sin(uTime), 1);
+
+    float clip = step(0, sin(length(uv - uPos.xy) * 10));
+    fragColor = vec4(uColor * clip , 1);
 }

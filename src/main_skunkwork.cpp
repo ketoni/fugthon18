@@ -164,6 +164,7 @@ int main()
                    glGetString(GL_VERSION),
                    glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+    bool showHAX= true;
 
     // Capture cout for logging
     std::stringstream logCout;
@@ -209,6 +210,9 @@ int main()
     Timer globalTime;
     GpuProfiler sceneProf(5);
 
+    GLfloat haxColor[] = { 0.f, 0.f, 0.f };
+    GLfloat haxPos[] = { 0.f, 0.f, 0.f };
+
 #ifdef MUSIC_AUTOPLAY
     AudioStream::getInstance().play();
 #endif // MUSIC_AUTOPLAY
@@ -246,6 +250,11 @@ int main()
             }
             logger.Draw();
             ImGui::End();
+
+            ImGui::Begin("HAX", &showHAX, 0);
+            ImGui::SliderFloat3("color", haxColor, 0.f, 1.f);
+            ImGui::SliderFloat3("position", haxPos, -1.f, 1.f);
+            ImGui::End();
         }
 #endif // GUI
 
@@ -261,6 +270,8 @@ int main()
         GLfloat res[] = {static_cast<GLfloat>(XRES), static_cast<GLfloat>(YRES)};
         glUniform2fv(scene.getULoc("uRes"), 1, res);
         glUniform2fv(scene.getULoc("uMPos"), 1, CURSOR_POS);
+        glUniform3fv(scene.getULoc("uColor"), 1, haxColor);
+        glUniform3fv(scene.getULoc("uPos"), 1, haxPos);
         q.render();
         sceneProf.endSample();
 
