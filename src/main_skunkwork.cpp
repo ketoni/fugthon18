@@ -22,9 +22,9 @@
 #include "timer.hpp"
 
 // Comment out to disable autoplay without tcp-Rocket
-//#define MUSIC_AUTOPLAY
+#define MUSIC_AUTOPLAY
 // Comment out to load sync from files
-#define TCPROCKET
+//#define TCPROCKET
 // Comment out to remove gui
 #define GUI
 
