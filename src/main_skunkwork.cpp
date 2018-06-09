@@ -196,7 +196,7 @@ int main()
 
     // Set up audio
     std::string musicPath(RES_DIRECTORY);
-    musicPath += "music/illegal_af.mp3";
+    musicPath += "music/gthon18.mp3";
     AudioStream::getInstance().init(musicPath, 175.0, 8);
     int32_t streamHandle = AudioStream::getInstance().getStreamHandle();
 
