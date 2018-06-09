@@ -42,6 +42,9 @@ namespace {
     float LOGH = 210.f;
     float LOGM = 10.f;
     GLfloat CURSOR_POS[] = {0.f, 0.f};
+    bool RESIZED = true;
+    std::vector<std::vector<GLfloat>> fft8Olds(3, {8, 0.f});
+    size_t activeData = 0;
 }
 
 //Set up audio callbacks for rocket
@@ -309,6 +312,23 @@ int main()
         }
 
         AudioStream::getInstance().getFFT(fftData);
+        std::vector<GLfloat> fft8New(8, 0.f);
+        for (int i = 0; i < 8; ++i) {
+            for (int j = i * 128; j < (i + 1) * 128; ++j) {
+                fft8New[i] += fftData[j];
+            }
+            fft8New[i] /= 8.f;
+        }
+
+        std::vector<GLfloat> fft8Avg(8);
+        for (int i = 0; i < 8; ++i) {
+            fft8Avg[i] = 0.1 * fft8Olds[0][i] +
+                         0.2 * fft8Olds[1][i] +
+                         0.3 * fft8Olds[2][i] +
+                         0.4 * fft8New[i];
+        }
+        fft8Olds.erase(fft8Olds.begin());
+        fft8Olds.emplace_back(std::move(fft8New));
 
         sceneProf.startSample();
         scene.bind(syncRow);
@@ -319,7 +339,7 @@ int main()
         glUniform2fv(scene.getULoc("uMPos"), 1, CURSOR_POS);
         glUniform3fv(scene.getULoc("uColor"), 1, haxColor);
         glUniform3fv(scene.getULoc("uPos"), 1, haxPos);
-        glUniform1fv(scene.getULoc("uFFT"), 1024, fftData);
+        glUniform1fv(scene.getULoc("uFFT"), 8, fft8Avg.data());
         q.render();
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         sceneProf.endSample();
