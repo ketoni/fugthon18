@@ -196,7 +196,7 @@ int main()
     std::string fragPath(RES_DIRECTORY);
     fragPath += "shader/basic_frag.glsl";
     Scene scene(std::vector<std::string>({vertPath, fragPath}),
-                std::vector<std::string>({"testi"}), rocket);
+                     std::vector<std::string>({"scene:testi"}), rocket);
 
 #ifdef TCPROCKET
     // Try connecting to rocket-server
@@ -213,6 +213,8 @@ int main()
 
     GLfloat haxColor[] = { 0.f, 0.f, 0.f };
     GLfloat haxPos[] = { 0.f, 0.f, 0.f };
+
+    GLfloat fftData[1024];
 
 #ifdef MUSIC_AUTOPLAY
     AudioStream::getInstance().play();
@@ -265,6 +267,8 @@ int main()
             reloadTime.reset();
         }
 
+        AudioStream::getInstance().getFFT(fftData);
+
         sceneProf.startSample();
         scene.bind(syncRow);
         glUniform1f(scene.getULoc("uTime"), globalTime.getSeconds());
@@ -273,6 +277,7 @@ int main()
         glUniform2fv(scene.getULoc("uMPos"), 1, CURSOR_POS);
         glUniform3fv(scene.getULoc("uColor"), 1, haxColor);
         glUniform3fv(scene.getULoc("uPos"), 1, haxPos);
+        glUniform1fv(scene.getULoc("uFFT"), 1024, fftData);
         q.render();
         sceneProf.endSample();
 
