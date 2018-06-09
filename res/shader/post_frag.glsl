@@ -20,6 +20,6 @@ void main()
     mapped = pow(mapped, vec3(1 / gamma));
     float scanlines = 0.7 + 0.2 * sin(uv.y * 900);
     float pixelrows = 1 + 0.1 * sin(uv.x * 1600);
-    float screenborder = 1.1 - length(pow(cDiff, vec2(4)));
+    float screenborder = 1 - length(pow(cDiff, vec2(5)));
     fragColor = vec4(mapped * scanlines * pixelrows * screenborder, 1);
 }
