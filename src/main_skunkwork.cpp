@@ -311,7 +311,7 @@ int main()
 #endif // GUI
 
         // Get current scene
-        Scene& scene = *scenes[(size_t)(float)sync_get_val(activeScene, syncRow)];
+        Scene& scene = *scenes[1];//*scenes[(size_t)(float)sync_get_val(activeScene, syncRow)];
 
         // Try reloading the shader every 0.5s
         if (reloadTime.getSeconds() > 0.5f) {
