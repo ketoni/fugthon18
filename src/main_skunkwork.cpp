@@ -15,8 +15,9 @@
 #include <track.h>
 
 #include "audioStream.hpp"
-#include "logger.hpp"
+#include "frameBuffer.hpp"
 #include "gpuProfiler.hpp"
+#include "logger.hpp"
 #include "quad.hpp"
 #include "scene.hpp"
 #include "shaderProgram.hpp"
@@ -202,10 +203,23 @@ int main()
     fragPath += "shader/basic_frag.glsl";
     scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
                          std::vector<std::string>({"scene:testi"}), rocket));
-    fragPath = RES_DIRECTORY;
-    fragPath += "shader/plasma3d_frag.glsl";
+    /*fragPath = RES_DIRECTORY;
+    fragPath += "shader/joku_frag.glsl";
     scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
-                         std::vector<std::string>({}), rocket));
+                          std::vector<std::string>({"tähän", "kasa", "uniformeja"}), rocket));*/
+
+
+    // Set up post processing pass
+    TextureParams rgba16fParams = {GL_RGBA16F, GL_RGBA, GL_FLOAT,
+                                   GL_LINEAR, GL_LINEAR,
+                                   GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER};
+
+    FrameBuffer mainFbo(XRES, YRES, std::vector<TextureParams>({rgba16fParams}));
+
+
+    std::string postFragPath(RES_DIRECTORY);
+    postFragPath += "shader/post_frag.glsl";
+    ShaderProgram postShader(vertPath, postFragPath);
 
 #ifdef TCPROCKET
     // Try connecting to rocket-server
@@ -217,6 +231,7 @@ int main()
     Timer reloadTime;
     Timer globalTime;
     GpuProfiler sceneProf(5);
+    GpuProfiler postProf(5);
 
     GLfloat haxColor[] = { 0.f, 0.f, 0.f };
     GLfloat haxPos[] = { 0.f, 0.f, 0.f };
@@ -253,7 +268,8 @@ int main()
             ImGui::SetNextWindowSize(ImVec2(LOGW, LOGH), ImGuiSetCond_Once);
             ImGui::SetNextWindowPos(ImVec2(LOGM, YRES - LOGH - LOGM), ImGuiSetCond_Always);
             ImGui::Begin("Log", &showLog, logWindowFlags);
-            ImGui::Text("Frame: %.1f Scene: %.1f", 1000.f / ImGui::GetIO().Framerate, sceneProf.getAvg());
+            ImGui::Text("Frame: %.1f Scene: %.1f Post: %.1f",
+                        1000.f / ImGui::GetIO().Framerate, sceneProf.getAvg(), postProf.getAvg());
             if (logCout.str().length() != 0) {
                 logger.AddLog("%s", logCout.str().c_str());
                 logCout.str("");
@@ -274,6 +290,7 @@ int main()
         // Try reloading the shader every 0.5s
         if (reloadTime.getSeconds() > 0.5f) {
             scene.reload();
+            postShader.reload();
             reloadTime.reset();
         }
 
@@ -281,6 +298,7 @@ int main()
 
         sceneProf.startSample();
         scene.bind(syncRow);
+        mainFbo.bindWrite();
         glUniform1f(scene.getULoc("uTime"), globalTime.getSeconds());
         GLfloat res[] = {static_cast<GLfloat>(XRES), static_cast<GLfloat>(YRES)};
         glUniform2fv(scene.getULoc("uRes"), 1, res);
@@ -289,7 +307,17 @@ int main()
         glUniform3fv(scene.getULoc("uPos"), 1, haxPos);
         glUniform1fv(scene.getULoc("uFFT"), 1024, fftData);
         q.render();
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         sceneProf.endSample();
+
+
+        postProf.startSample();
+        glViewport(0, 0, XRES, YRES);
+        postShader.bind();
+        glUniform2fv(postShader.getULoc("uRes"), 1, res);
+        mainFbo.bindRead(0, GL_TEXTURE0, postShader.getULoc("uHdrSampler"));
+        q.render();
+        postProf.endSample();
 
 #ifdef GUI
         ImGui::Render();
