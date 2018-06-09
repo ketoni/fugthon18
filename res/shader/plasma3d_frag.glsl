@@ -44,9 +44,9 @@ float fBlob(vec3 p, float s) {
     pR(p.xz, uTime);
     pR(p.yz, 0.5 * sin(uTime));
     pR(p.yx, 2 * uTime);
-    float highs = 5 * uFFT[7] * cos((p.x + sin(uTime)) * 20) * cos((p.y * 20) + cos(uTime)) * cos(p.z * 20);
+    float highs = 5 * uFFT[5] * cos((p.x + sin(uTime)) * 20) * cos((p.y * 20) + cos(uTime)) * cos(p.z * 20);
     float mids = 12 * uFFT[2]  * cos((p.x + sin(uTime)) * 10) * cos((p.y * 10) + cos(uTime)) * cos(p.z * 10);
-    float lows = 1.2 * uFFT[0] * cos((p.x + PI * sin(uTime)) * 2) * cos((p.y + 0.5 * cos(uTime)) * 2) * cos((p.z + 3 * sin(uTime))* 2);
+    float lows = 2 * uFFT[0] * cos((p.x + PI * sin(uTime)) * 2) * cos((p.y + 0.5 * cos(uTime)) * 2) * cos((p.z + 3 * sin(uTime))* 2);
     return fSphere(p, s + lows + mids + highs);
 }
 
@@ -89,7 +89,7 @@ void main()
 
     // Early out if nothing was hit
     if (t > MAX_DEPTH) {
-        fragColor = vec4(0.08, 0.2, 0.02, 1);
+        fragColor = vec4(0.7, 0.2, 0, 1);
         return;
     }
 

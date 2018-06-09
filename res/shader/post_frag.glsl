@@ -6,13 +6,13 @@ uniform float uScene;
 
 uniform sampler2D uHDRSampler;
 
-const float exposure = 1.8;
+const float exposure = 1.5;
 
 out vec4 fragColor;
 
 void main()
 {
-    const float gamma = 1.7;
+    const float gamma = 2.2;
     vec2 uv = gl_FragCoord.xy / uRes;
     vec2 cDiff = uv * 2 - 1;
     vec3 hdr = texture(uHDRSampler, uv).rgb;
