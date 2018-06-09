@@ -104,6 +104,7 @@ void windowSizeCallback(GLFWwindow* window, int width, int height)
     XRES = width;
     YRES = height;
     glViewport(0, 0, XRES, YRES);
+    RESIZED = true;
 }
 
 static void errorCallback(int error, const char* description)
@@ -262,6 +263,12 @@ int main()
     // Run the main loop
     while (!glfwWindowShouldClose(windowPtr)) {
         glfwPollEvents();
+
+        // Handle resize
+        if (RESIZED) {
+            mainFbo.resize(XRES, YRES);
+            RESIZED = false;
+        }
 
         // Sync
         double syncRow = AudioStream::getInstance().getRow();
