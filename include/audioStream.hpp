@@ -30,6 +30,7 @@ public:
     void stop();
     double getRow() const;
     void setRow(int32_t row);
+    void getFFT(float *buffer);
 
 private:
     AudioStream();

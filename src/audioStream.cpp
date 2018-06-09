@@ -86,6 +86,11 @@ void AudioStream::setRow(int32_t row)
     BASS_ChannelSetPosition(_streamHandle, pos, BASS_POS_BYTE);
 }
 
+void AudioStream::getFFT(float *buffer)
+{
+    BASS_ChannelGetData(_streamHandle, buffer, BASS_DATA_FFT2048);
+}
+
 AudioStream::AudioStream() :
     _streamHandle(0),
     _shouldRestart(false)
