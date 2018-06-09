@@ -22,9 +22,6 @@ float func(vec2 p)
 {
    vec2 pp = floor(p);
    
-   //return uFFT[];
-   return 1;
-  /* 
    return
        amp[0]*uFFT[0]*(1.1+sin((pp.x-uTime*tm[0])/2)) +
        amp[1]*uFFT[1]*(1.1+sin((pp.y-uTime*tm[1])/2)) +
@@ -34,7 +31,6 @@ float func(vec2 p)
        amp[5]*uFFT[5]*(1.1+sin((pp.y-uTime*tm[5])*2)) +
        amp[6]*uFFT[6]*(1.1+sin((pp.x-uTime*tm[6])*4)) +
        amp[7]*uFFT[7]*(1.1+sin((pp.y-uTime*tm[7])*4));
-*/
 }
 
 float bars( vec3 p, vec2 c )
@@ -51,8 +47,8 @@ void main()
     
     float t = uTime*0.5;
     
-    vec3 ro = vec3(10.0f*cos(t), 5.0, 10.0f*sin(t));
-    vec3 rt = vec3(5.0f*cos(t*0.456), 2.0, 5.0f*sin(t*0.456));
+    vec3 ro = vec3(12.0f*cos(t), 8.0+sin(t*0.2), 10.0f*sin(t));
+    vec3 rt = vec3(4.0f*cos(t*0.756), 1.0, -5.0f*sin(t*0.456));
     mat3 co;
     co[2] = normalize(ro-rt);
     co[0] = cross(co[2], vec3(0.0, -1.0, 0.0));
