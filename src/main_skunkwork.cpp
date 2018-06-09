@@ -9,6 +9,7 @@
 #include <imgui_impl_glfw_gl3.h>
 #include <iostream>
 #include <math.h>
+#include <memory>
 #include <sstream>
 #include <sync.h>
 #include <track.h>
@@ -190,13 +191,21 @@ int main()
     sync_device *rocket = sync_create_device("sync");
     if (!rocket) cout << "[rocket] failed to init" << endl;
 
-    // Set up scene
+    // Init rocket tracks here
+    const sync_track* activeScene = sync_get_track(rocket, "activeScene");
+
+    // Set up scenes
     std::string vertPath(RES_DIRECTORY);
     vertPath += "shader/basic_vert.glsl";
+    std::vector<std::unique_ptr<Scene>> scenes;
     std::string fragPath(RES_DIRECTORY);
     fragPath += "shader/basic_frag.glsl";
-    Scene scene(std::vector<std::string>({vertPath, fragPath}),
-                     std::vector<std::string>({"scene:testi"}), rocket);
+    scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
+                         std::vector<std::string>({"scene:testi"}), rocket));
+    fragPath = RES_DIRECTORY;
+    fragPath += "shader/plasma3d_frag.glsl";
+    scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
+                         std::vector<std::string>({}), rocket));
 
 #ifdef TCPROCKET
     // Try connecting to rocket-server
@@ -204,8 +213,6 @@ int main()
     if (!rocketConnected)
         cout << "[rocket] failed to connect" << endl;
 #endif // TCPROCKET
-
-    // Init rocket tracks here
 
     Timer reloadTime;
     Timer globalTime;
@@ -260,6 +267,9 @@ int main()
             ImGui::End();
         }
 #endif // GUI
+
+        // Get current scene
+        Scene& scene = *scenes[(size_t)(float)sync_get_val(activeScene, syncRow)];
 
         // Try reloading the shader every 0.5s
         if (reloadTime.getSeconds() > 0.5f) {
