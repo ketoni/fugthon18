@@ -219,12 +219,14 @@ int main()
     fragPath += "shader/joku_frag.glsl";
     scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
                           std::vector<std::string>({"tähän", "kasa", "uniformeja"}), rocket));*/
-    
     fragPath = RES_DIRECTORY;
     fragPath += "shader/barfft_frag.glsl";
     scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
                         std::vector<std::string>({""}), rocket));
-
+    fragPath = RES_DIRECTORY;
+    fragPath += "shader/plasma3d_frag.glsl";
+    scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
+                          std::vector<std::string>({}), rocket));
 
 
     // Set up post processing pass
