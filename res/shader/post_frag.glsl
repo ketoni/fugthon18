@@ -2,6 +2,8 @@
 
 #include "uniforms.glsl"
 
+uniform float uScene;
+
 uniform sampler2D uHDRSampler;
 
 const float exposure = 1.8;

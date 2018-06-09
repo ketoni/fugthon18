@@ -134,6 +134,7 @@ int main()
     // Create the window
     GLFWwindow* windowPtr;
     windowPtr = glfwCreateWindow(XRES, YRES, WINDOW_TITLE, NULL, NULL);
+    //windowPtr = glfwCreateWindow(XRES, YRES, WINDOW_TITLE, glfwGetPrimaryMonitor(), NULL);
     if (!windowPtr) {
         glfwTerminate();
         cerr << "Error creating GLFW-window!" << endl;
@@ -346,6 +347,7 @@ int main()
         glViewport(0, 0, XRES, YRES);
         postShader.bind();
         glUniform2fv(postShader.getULoc("uRes"), 1, res);
+        glUniform1f(postShader.getULoc("uScene"), (size_t)(float)sync_get_val(activeScene, syncRow));
         mainFbo.bindRead(0, GL_TEXTURE0, postShader.getULoc("uHdrSampler"));
         q.render();
         postProf.endSample();
