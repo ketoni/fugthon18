@@ -56,6 +56,14 @@ void keyCallback(GLFWwindow* window, int32_t key, int32_t scancode, int32_t acti
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE);
+    else if (key == GLFW_KEY_O && action == GLFW_PRESS)
+        AudioStream::getInstance().stop();
+    else if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+        if (AudioStream::getInstance().isPlaying())
+            AudioStream::getInstance().pause();
+        else
+            AudioStream::getInstance().play();
+    }
 #ifdef GUI
     else
         ImGui_ImplGlfwGL3_KeyCallback(window, key, scancode, action, mods);
