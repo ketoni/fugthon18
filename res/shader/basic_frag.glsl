@@ -1,6 +1,6 @@
 #version 410
 
-#include "hg_sdf.glsl"
+//#include "hg_sdf.glsl"
 #include "uniforms.glsl"
 
 out vec4 fragColor;
