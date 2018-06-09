@@ -8,7 +8,12 @@
 #define MIN_DEPTH 0
 #define MAX_DEPTH 10
 #define EPSILON 0.0001
-#define EPSILON 0.0001
+#define PI 3.145
+
+// Inputs
+uniform float uIntensity;
+uniform float uMotion;
+uniform float uYPos;
 
 // Outputs
 out vec4 fragColor;
@@ -35,13 +40,20 @@ float fSphere(vec3 p, float r) {
     return length(p) - r;
 }
 
+float fBlob(vec3 p, float s) {
+    pR(p.xz, uTime);
+    pR(p.yz, 0.5 * sin(uTime));
+    pR(p.yx, 2 * uTime);
+    float highs = 5 * uFFT[7] * cos((p.x + sin(uTime)) * 20) * cos((p.y * 20) + cos(uTime)) * cos(p.z * 20);
+    float mids = 12 * uFFT[2]  * cos((p.x + sin(uTime)) * 10) * cos((p.y * 10) + cos(uTime)) * cos(p.z * 10);
+    float lows = 1.2 * uFFT[0] * cos((p.x + PI * sin(uTime)) * 2) * cos((p.y + 0.5 * cos(uTime)) * 2) * cos((p.z + 3 * sin(uTime))* 2);
+    return fSphere(p, s + lows + mids + highs);
+}
+
 float fScene(vec3 p)
 {
-    pR(p.xz, uTime);
-    float highs = 5 * uFFT[7] * cos(p.x * 20) * cos(p.y * 20) * cos(p.z * 20);
-    float mids = 4 * uFFT[4]  * cos(p.x * 10) * cos(p.y * 10) * cos(p.z * 10);
-    float lows = 3 * uFFT[1] * cos((p.x + sin(uTime)) * 2) * cos((p.y + 4 * sin(uTime)) * 2) * cos((p.z + 3 * sin(uTime))* 2);
-    return fSphere(p, 0.7+ lows + mids + highs);
+    p -= vec3(0, uYPos, 0);
+    return fBlob(p - vec3(0, -0.1, 0), 0.8);
 }
 
 vec3 genViewRay(float fov)
@@ -53,6 +65,7 @@ vec3 genViewRay(float fov)
 
 void main()
 {
+    vec2 cPos = gl_FragCoord.xy / uRes.xy * 2 - 1;
     // Camera stuff
     vec3 o = vec3(0, 0, -5);
     vec3 d = genViewRay(60);
@@ -76,11 +89,12 @@ void main()
 
     // Early out if nothing was hit
     if (t > MAX_DEPTH) {
-        fragColor = vec4(0);
+        fragColor = vec4(0.08, 0.2, 0.02, 1);
         return;
     }
 
     // Calculate hit position from final distance
     vec3 hit_pos = o + t * d;
-    fragColor = vec4(vec3(pow(1 - t / 3, 4)), 1);
+    float depth = 8 * pow(1 - t / 3, 4);
+    fragColor = vec4(depth, 0, depth * depth, 1);
 }
