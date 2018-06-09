@@ -6,7 +6,7 @@ uniform float uScene;
 
 uniform sampler2D uHDRSampler;
 
-const float exposure = 1.5;
+const float exposure = 2.5;
 
 out vec4 fragColor;
 
@@ -18,7 +18,7 @@ void main()
     vec3 hdr = texture(uHDRSampler, uv).rgb;
     vec3 mapped = vec3(1) - exp(-hdr * exposure);
     mapped = pow(mapped, vec3(1 / gamma));
-    float scanlines = 0.7 + 0.2 * sin(uv.y * 900);
+    float scanlines = 1 + 0.2 * sin(uv.y * 900);
     float pixelrows = 1 + 0.1 * sin(uv.x * 1600);
     float screenborder = 1 - length(pow(cDiff, vec2(5)));
     fragColor = vec4(mapped * scanlines * pixelrows * screenborder, 1);
