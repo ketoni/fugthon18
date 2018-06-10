@@ -99,7 +99,7 @@ void main()
     float g = 0.5*exp(-pow(2*a-2, 2));
     float b = exp(-pow(a+1.75, 2));
 
-        fragColor = vec4(depth*r, (1-depth)*g, b, 1.0);
+        fragColor = 5 * vec4(depth*r, (1-depth)*g, b, 1.0);
 
 
 }

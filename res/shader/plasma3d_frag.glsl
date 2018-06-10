@@ -89,12 +89,12 @@ void main()
 
     // Early out if nothing was hit
     if (t > MAX_DEPTH) {
-        fragColor = 2 * vec4(0.8, 0.15, 0, 1);
+        fragColor = 1.6 * vec4(0.5, 0.2, 0, 1);
         return;
     }
 
     // Calculate hit position from final distance
     vec3 hit_pos = o + t * d;
-    float depth = 8 * pow(1 - t / 3, 4);
-    fragColor = 2 * vec4(depth, 0, depth * depth, 1);
+    float depth = pow(1 - t / 2.7, 2);
+    fragColor = 1.6 * vec4(depth, 0, depth * depth, 1);
 }
