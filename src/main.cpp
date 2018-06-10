@@ -28,7 +28,7 @@
 // Comment out to load sync from files
 #define TCPROCKET
 // Comment out to remove gui
-#define GUI
+//#define GUI
 
 using std::cout;
 using std::cerr;
@@ -206,6 +206,10 @@ int main()
 
     // Init rocket tracks here
     const sync_track* activeScene = sync_get_track(rocket, "activeScene");
+    const sync_track* plasma = sync_get_track(rocket, "plasma");
+    const sync_track* vertical = sync_get_track(rocket, "vertical");
+    const sync_track* distance = sync_get_track(rocket, "distance");
+    const sync_track* zoom = sync_get_track(rocket, "zoom");
 
     // Set up scenes
     std::string vertPath(RES_DIRECTORY);
@@ -216,11 +220,14 @@ int main()
     fragPath += "shader/plasma3d_frag.glsl";
     scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
                           std::vector<std::string>({}), rocket));
-    // Keksi tähän
+    fragPath = RES_DIRECTORY;
+    fragPath += "shader/aaltojavittu.glsl";
+    scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
+                        std::vector<std::string>({""}), rocket));
     fragPath = RES_DIRECTORY;
     fragPath += "shader/barfft_frag.glsl";
     scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
-                        std::vector<std::string>({""}), rocket));
+                        std::vector<std::string>({}), rocket));
 
     // Set up post processing pass
     TextureParams rgba16fParams = {GL_RGBA16F, GL_RGBA, GL_FLOAT,
@@ -339,6 +346,10 @@ int main()
         glUniform3fv(scene.getULoc("uColor"), 1, haxColor);
         glUniform3fv(scene.getULoc("uPos"), 1, haxPos);
         glUniform1fv(scene.getULoc("uFFT"), 8, delayAvg.data());
+        glUniform1f(scene.getULoc("uPlasma"), (float)sync_get_val(plasma, syncRow));
+        glUniform1f(scene.getULoc("uVertical"), (float)sync_get_val(vertical, syncRow));
+        glUniform1f(scene.getULoc("uDistance"), (float)sync_get_val(distance, syncRow));
+        glUniform1f(scene.getULoc("uZoom"), (float)sync_get_val(zoom, syncRow));
         q.render();
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
         sceneProf.endSample();

@@ -1,7 +1,6 @@
 #version 410
 
 #include "uniforms.glsl"
-#include "noise.glsl"
 
 // Constants
 #define MAX_STEPS 256
@@ -9,11 +8,6 @@
 #define MAX_DEPTH 10
 #define EPSILON 0.0001
 #define PI 3.145
-
-// Inputs
-uniform float uIntensity;
-uniform float uMotion;
-uniform float uYPos;
 
 // Outputs
 out vec4 fragColor;
@@ -52,7 +46,6 @@ float fBlob(vec3 p, float s) {
 
 float fScene(vec3 p)
 {
-    p -= vec3(0, uYPos, 0);
     return fBlob(p - vec3(0, -0.1, 0), 0.8);
 }
 
@@ -89,12 +82,12 @@ void main()
 
     // Early out if nothing was hit
     if (t > MAX_DEPTH) {
-        fragColor = 1.6 * vec4(0.5, 0.2, 0, 1);
+        fragColor = 2 * vec4(0.8, 0.55, 0, 1);
         return;
     }
 
     // Calculate hit position from final distance
     vec3 hit_pos = o + t * d;
     float depth = pow(1 - t / 2.7, 2);
-    fragColor = 1.6 * vec4(depth, 0, depth * depth, 1);
+    fragColor = 2 * vec4(depth, 0, depth * depth, 1);
 }

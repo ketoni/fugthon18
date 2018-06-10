@@ -1,3 +1,9 @@
-# Make a demo, yo!
+# veipör by fugtional
 
-this will contain our demo by noon on sunday. probably.
+shaders: keksi, sndels, lehdari\
+music: tkln\
+tooling: sndels\
+tunkening: everyone
+
+## Building
+pull git submodules, install bass.h from u4seen to ext/bass/ and lib to /ext/bass/lib/. Builds with cmake on osx, linux, and msvc.

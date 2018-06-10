@@ -15,7 +15,7 @@ void main()
     vec2 cDiff = uv * 2 - 1;
     vec3 color = texture(uColorSampler, uv).rgb;
     color = pow(color, vec3(1 / gamma));
-    float scanlines = 1 + 0.1 * sin(uv.y * 900);
+    float scanlines = 1 + 0.15 * sin(uv.y * 900);
     float pixelrows = 1 + 0.05 * sin(uv.x * 1600);
     float screenborder = 1 - length(pow(cDiff, vec2(3)));
     fragColor = vec4(color * scanlines * pixelrows * screenborder, 1);

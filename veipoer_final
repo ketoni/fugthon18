@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rootElement>
+<tracks rows="10000" startRow="0" endRow="10000" rowsPerBeat="8"
+beatsPerMin="125">
+	<track name="activeScene" folded="0" muteKeyCount="0"
+color="ffb27474">
+		<key row="0" value="1.000000" interpolation="0" />
+		<key row="928" value="0.000000" interpolation="0" />
+		<key row="929" value="1.000000" interpolation="0" />
+		<key row="930" value="0.000000" interpolation="0" />
+		<key row="1603" value="2.000000" interpolation="0" />
+		<key row="1604" value="0.000000" interpolation="0" />
+		<key row="1605" value="2.000000" interpolation="0" />
+	</track>
+	<track name="plasma" folded="0" muteKeyCount="0" color="ffb28050">
+		<key row="0" value="0.000000" interpolation="3" />
+		<key row="232" value="0.060000" interpolation="1" />
+		<key row="335" value="0.100000" interpolation="3" />
+		<key row="424" value="1.000000" interpolation="0" />
+		<key row="755" value="0.200000" interpolation="0" />
+		<key row="756" value="1.000000" interpolation="0" />
+		<key row="757" value="0.200000" interpolation="0" />
+		<key row="758" value="1.000000" interpolation="0" />
+	</track>
+	<track name="vertical" folded="0" muteKeyCount="0"
+color="ffa9b250">
+		<key row="0" value="1.000000" interpolation="0" />
+		<key row="232" value="1.000000" interpolation="1" />
+		<key row="296" value="0.350000" interpolation="1" />
+		<key row="419" value="0.000000" interpolation="1" />
+		<key row="420" value="1.000000" interpolation="1" />
+		<key row="421" value="-1.000000" interpolation="1" />
+		<key row="422" value="0.000000" interpolation="1" />
+	</track>
+	<track name="distance" folded="0" muteKeyCount="0"
+color="ff60b250">
+		<key row="0" value="1.000000" interpolation="0" />
+		<key row="841" value="0.800000" interpolation="0" />
+		<key row="842" value="1.000000" interpolation="0" />
+		<key row="843" value="0.800000" interpolation="0" />
+		<key row="844" value="1.000000" interpolation="0" />
+	</track>
+	<track name="zoom" folded="0" muteKeyCount="0" color="ff4fb292">
+		<key row="0" value="-3.000000" interpolation="0" />
+		<key row="232" value="-3.000000" interpolation="1" />
+		<key row="281" value="-1.000000" interpolation="1" />
+		<key row="424" value="-1.000000" interpolation="0" />
+		<key row="503" value="-1.000000" interpolation="0" />
+		<key row="504" value="-0.500000" interpolation="0" />
+		<key row="505" value="-1.000000" interpolation="0" />
+	</track>
+</tracks>
+	</rootElement>
