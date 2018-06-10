@@ -35,9 +35,9 @@ using std::cerr;
 using std::endl;
 
 namespace {
-    const static char* WINDOW_TITLE = "skunkwork";
-    GLsizei XRES = 1280;
-    GLsizei YRES = 720;
+    const static char* WINDOW_TITLE = "veipör";
+    GLsizei XRES = 1920;
+    GLsizei YRES = 1080;
     float LOGW = 690.f;
     float LOGH = 210.f;
     float LOGM = 10.f;
@@ -212,22 +212,15 @@ int main()
     vertPath += "shader/basic_vert.glsl";
     std::vector<std::unique_ptr<Scene>> scenes;
     std::string fragPath(RES_DIRECTORY);
-    fragPath += "shader/basic_frag.glsl";
-    scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
-                         std::vector<std::string>({"scene:testi"}), rocket));
-    /*fragPath = RES_DIRECTORY;
-    fragPath += "shader/joku_frag.glsl";
-    scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
-                          std::vector<std::string>({"tähän", "kasa", "uniformeja"}), rocket));*/
-    fragPath = RES_DIRECTORY;
-    fragPath += "shader/barfft_frag.glsl";
-    scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
-                        std::vector<std::string>({""}), rocket));
     fragPath = RES_DIRECTORY;
     fragPath += "shader/plasma3d_frag.glsl";
     scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
                           std::vector<std::string>({}), rocket));
-
+    // Keksi tähän
+    fragPath = RES_DIRECTORY;
+    fragPath += "shader/barfft_frag.glsl";
+    scenes.emplace_back(std::make_unique<Scene>(std::vector<std::string>({vertPath, fragPath}),
+                        std::vector<std::string>({""}), rocket));
 
     // Set up post processing pass
     TextureParams rgba16fParams = {GL_RGBA16F, GL_RGBA, GL_FLOAT,
